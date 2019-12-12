@@ -6,8 +6,9 @@ import {map, mergeMap} from 'rxjs/operators';
 import {ProcessDataRequestService} from './services/data/process/process-data-request.service';
 
 import {InvestorClass} from './model/investor/investor.class';
-import {DataClass} from './model/data/data.class';
-
+import {IndustryService} from './services/industry/industry.service';
+import {InvestorService} from './services/investor/investor.service';
+import {NumberIndustryStartupService} from './services/stateful/number-industry-startup.service';
 import {IndustryStartupsInterface} from './interfaces/industry-startups.interface';
 
 @Component({
@@ -23,7 +24,10 @@ export class AppComponent implements OnInit {
   private readonly numberIndustryStartup: IndustryStartupsInterface<number>;
 
   constructor(
-    private processDataRequestService: ProcessDataRequestService
+    private processDataRequestService: ProcessDataRequestService,
+    private industryService: IndustryService,
+    private investorService: InvestorService,
+    private numberIndustryStartupService: NumberIndustryStartupService
   ) {
     this.getInvestorData();
     this.numberIndustryStartup = {};
@@ -32,50 +36,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {}
 
   getInvestorData() {
-
-    const splitIndustry = ( investors: InvestorClass[], startups: DataClass[] ): IndustryStartupsInterface<DataClass[]> => {
-
-      const aux: IndustryStartupsInterface<DataClass[]> = {};
-
-      for ( const investor of investors ) {
-
-        aux[ investor.industry ] = ( investor.industry !== 'any' ) ?
-
-          [...startups.filter( startup => startup.industry === investor.industry )] :
-
-          [...startups];
-
-      }
-
-      return aux;
-
-    };
-
-    const fillStartupForInvestors = ( investors: InvestorClass[], industries: IndustryStartupsInterface<DataClass[]> ): InvestorClass[] => {
-
-      return investors.map( investor => {
-
-        investor.startups = [
-
-          ...industries[investor.industry]
-
-            .slice(
-
-              this.numberIndustryStartup[investor.industry],
-
-              this.numberIndustryStartup[investor.industry] + 10
-
-            )
-
-        ];
-
-        this.numberIndustryStartup[investor.industry] += investor.startups.length;
-
-        return investor;
-
-      });
-
-    };
 
     this.investor$ = this.processDataRequestService.startup
 
@@ -91,6 +51,8 @@ export class AppComponent implements OnInit {
 
           });
 
+          this.numberIndustryStartupService.object = this.numberIndustryStartup;
+
           return startups;
 
         }),
@@ -103,9 +65,9 @@ export class AppComponent implements OnInit {
 
               map( investors => {
 
-                const industries = splitIndustry( investors, startups );
+                const industries = this.industryService.splitIndustry( investors, startups );
 
-                return fillStartupForInvestors( investors, industries );
+                return this.investorService.fillStartupForInvestors( investors, industries );
 
               }),
             )
