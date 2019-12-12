@@ -1,0 +1,30 @@
+<ul class="list-group">
+
+  <li class="list-group-item p-2" *ngFor="let startup of investor.startups; let i = index">
+
+    <div class="d-flex flex-row align-items-center">
+
+      <div class="col-2">
+
+        <h5>{{ i + 1 }}</h5>
+
+      </div>
+
+      <div class="col">
+
+        <b>{{ startup.name }}</b>:
+
+      </div>
+
+      <div class="col">
+
+        <p class="mb-0">{{ startup.industry }}</p>
+
+      </div>
+
+
+    </div>
+
+  </li>
+
+</ul>

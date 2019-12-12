@@ -1,0 +1,35 @@
+<div class="d-flex flex-column align-items-center">
+
+  <div class="card mb-3" style="width: 18vw;">
+
+    <svg class="bd-placeholder-img card-img-top card__svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Image cap">
+
+      <rect width="100%" fill="#868e96"/>
+
+      <text x="40%" y="50%" fill="#dee2e6" dy=".3vw">Image cap</text>
+
+    </svg>
+
+    <div class="card-body my-3">
+
+      <h5 class="card-title">
+
+        <b>Name: </b>
+
+        <span>{{ investor.name }}</span>
+
+      </h5>
+
+      <div class="text-center mt-4">
+
+        <h5>Industry preference:</h5>
+
+        <h6 class="font-weight-bold">
+
+          {{ investor.industry | uppercase }}
+
+        </h6>
+
+      </div>
+
+    </div>
