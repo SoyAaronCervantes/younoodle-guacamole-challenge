@@ -1,3 +1,3 @@
 export const csvRoutesNames = {
-  files: '/assets/csv'
+  files: 'assets/csv'
 };
