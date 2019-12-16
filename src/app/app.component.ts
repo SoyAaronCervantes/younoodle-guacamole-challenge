@@ -39,6 +39,10 @@ export class AppComponent implements OnInit {
 
       .pipe(
 
+        map( startups =>
+          startups.sort( (a, b) => ( a.industry > b.industry ) ? 1 : ( a.industry < b.industry ) ? -1 : 0 )
+        ),
+
         mergeMap(
 
           startups => this.processDataRequestService.investors
@@ -47,9 +51,7 @@ export class AppComponent implements OnInit {
 
               map( investors => {
 
-                const industries = this.industryService.splitIndustry( investors, startups );
-
-                return this.investorService.fillStartupForInvestors( investors, industries );
+                return this.investorService.fillStartupForInvestors( investors, startups );
 
               }),
             )
