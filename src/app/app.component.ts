@@ -8,7 +8,6 @@ import {ProcessDataRequestService} from './services/data/process/process-data-re
 import {InvestorClass} from './model/investor/investor.class';
 import {IndustryService} from './services/industry/industry.service';
 import {InvestorService} from './services/investor/investor.service';
-import {NumberIndustryStartupService} from './services/stateful/number-industry-startup.service';
 import {IndustryStartupsInterface} from './interfaces/industry-startups.interface';
 
 @Component({
@@ -20,14 +19,13 @@ import {IndustryStartupsInterface} from './interfaces/industry-startups.interfac
 export class AppComponent implements OnInit {
 
   title = 'good-match';
-  investor$: Observable<InvestorClass[]>;
+  investors$: Observable<InvestorClass[]>;
   private readonly numberIndustryStartup: IndustryStartupsInterface<number>;
 
   constructor(
     private processDataRequestService: ProcessDataRequestService,
     private industryService: IndustryService,
     private investorService: InvestorService,
-    private numberIndustryStartupService: NumberIndustryStartupService
   ) {
     this.getInvestorData();
     this.numberIndustryStartup = {};
@@ -37,25 +35,9 @@ export class AppComponent implements OnInit {
 
   getInvestorData() {
 
-    this.investor$ = this.processDataRequestService.startup
+    this.investors$ = this.processDataRequestService.startups
 
       .pipe(
-
-        map( startups => {
-
-          startups.forEach( value => {
-
-            this.numberIndustryStartup[value.industry] = 0;
-
-            this.numberIndustryStartup.any = 0;
-
-          });
-
-          this.numberIndustryStartupService.object = this.numberIndustryStartup;
-
-          return startups;
-
-        }),
 
         mergeMap(
 
