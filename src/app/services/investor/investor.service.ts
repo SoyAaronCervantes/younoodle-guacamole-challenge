@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {InvestorClass} from '../../model/investor/investor.class';
-import {IndustryStartupsInterface} from '../../interfaces/industry-startups.interface';
 import {DataClass} from '../../model/data/data.class';
+import {isUndefined} from 'util';
 
 @Injectable({
   providedIn: 'root'
@@ -10,47 +10,35 @@ export class InvestorService {
 
   constructor() { }
 
-  fillStartupForInvestors( investors: InvestorClass[], industries: IndustryStartupsInterface<DataClass[]> ): InvestorClass[] {
+  fillStartupForInvestors( investors: InvestorClass[], startups: DataClass[] ): InvestorClass[] {
 
-    let auxInvestors: InvestorClass[];
+    for ( const investor of investors ) {
 
-    investors.map(investor => {
+      if ( isUndefined( investor.startups ) ) { investor.startups = []; }
 
-      if (investor.industry !== 'any') {
+      for ( const startup of startups ) {
 
-        investor.startups = industries[investor.industry].splice(0, 10);
+        if ( investor.industry === startup.industry && investor.startups.length < 10 ) {
 
-      }
+          investor.startups = startups.splice( startups.indexOf( startup ), 10);
 
-      return investor;
-
-    });
-
-    let test = [];
-
-    for (const key in industries) {
-
-      if (industries.hasOwnProperty(key)) {
-
-        const element = industries[key];
-
-        test = [...test, ...element];
+        }
 
       }
 
     }
 
-    auxInvestors = investors.map( investor => {
+    for ( const investor of investors ) {
 
-      if ( investor.industry === 'any' ) { investor.startups = test.splice(0, 10); }
+      if ( investor.startups.length < 10  ) {
 
-      return investor;
+        investor.startups = startups.splice( 0, 10);
 
-    });
+      }
 
-    console.log( auxInvestors );
+    }
 
-    return auxInvestors;
+    return investors;
 
   }
 
