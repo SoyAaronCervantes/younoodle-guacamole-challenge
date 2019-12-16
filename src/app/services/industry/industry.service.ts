@@ -10,17 +10,17 @@ export class IndustryService {
 
   constructor() { }
 
-  splitIndustry( investors: InvestorClass[], startups: DataClass[] ): IndustryStartupsInterface<DataClass[]> {
+  splitIndustry( investors: DataClass[], startups: DataClass[] ): IndustryStartupsInterface<DataClass[]> {
 
     const aux: IndustryStartupsInterface<DataClass[]> = {};
 
     for ( const investor of investors ) {
 
-      aux[ investor.industry ] = ( investor.industry !== 'any' ) ?
+      if ( investor.industry !== 'any' ) {
 
-        [...startups.filter( startup => startup.industry === investor.industry )] :
+        aux[ investor.industry ] = [...startups.filter( startup => startup.industry === investor.industry )];
 
-        [...startups];
+      }
 
     }
 
