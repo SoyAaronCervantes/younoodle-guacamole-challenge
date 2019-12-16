@@ -47,9 +47,7 @@ export class AppComponent implements OnInit {
 
               map( investors => {
 
-                const industries = this.industryService.splitIndustry( investors, startups );
-
-                return this.investorService.fillStartupForInvestors( investors, industries );
+                return this.investorService.fillStartupForInvestors( investors, startups );
 
               }),
             )
