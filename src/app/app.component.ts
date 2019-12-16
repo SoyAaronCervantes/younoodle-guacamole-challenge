@@ -39,6 +39,10 @@ export class AppComponent implements OnInit {
 
       .pipe(
 
+        map( startups =>
+          startups.sort( (a, b) => ( a.industry > b.industry ) ? 1 : ( a.industry < b.industry ) ? -1 : 0 )
+        ),
+
         mergeMap(
 
           startups => this.processDataRequestService.investors

@@ -12,15 +12,13 @@ export class InvestorService {
 
   fillStartupForInvestors( investors: InvestorClass[], startups: DataClass[] ): InvestorClass[] {
 
-    startups.sort( (a, b) => ( a.industry > b.industry ) ? 1 : ( a.industry < b.industry ) ? -1 : 0 );
-
     for ( const investor of investors ) {
 
       if ( isUndefined( investor.startups ) ) { investor.startups = []; }
 
       for ( const startup of startups ) {
 
-        if ( investor.industry === startup.industry && investor.startups.length <= 9) {
+        if ( investor.industry === startup.industry && investor.startups.length < 10 ) {
 
           investor.startups = startups.splice( startups.indexOf( startup ), 10);
 
@@ -28,13 +26,11 @@ export class InvestorService {
 
       }
 
-      console.log( startups );
-
     }
 
     for ( const investor of investors ) {
 
-      if ( investor.startups.length <= 9 ) {
+      if ( investor.startups.length < 10  ) {
 
         investor.startups = startups.splice( 0, 10);
 
