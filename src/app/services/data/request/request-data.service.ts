@@ -20,7 +20,7 @@ export class RequestDataService {
 
   }
 
-  get startup(): Observable<string> {
+  get startups(): Observable<string> {
 
     // @ts-ignore
     return this.httpClient.get<string>( csvRoutesNames.files + '/startups.csv', { responseType: 'text' });

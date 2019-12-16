@@ -23,8 +23,8 @@ export class ProcessDataRequestService {
     );
   }
 
-  get startup(): Observable<DataClass[]> {
-    return this.requestDataService.startup.pipe(
+  get startups(): Observable<DataClass[]> {
+    return this.requestDataService.startups.pipe(
       map( res => {
         return this.parseToJSON( res );
       })
